@@ -1,0 +1,23 @@
+type project
+owners
+    Martin J. Lenardon
+authors 
+    Martin J. Lenardon
+projectUrl
+    http://github.com/L2Analytics/TKV
+iconUrl
+    https://raw.githubusercontent.com/L2Analytics/TKV/master/docs/files/img/logo.png
+licenseUrl
+    http://github.com/L2Analytics/TKV/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    
+summary
+    Time-Key-Value
+description
+    Key-Value storage with built-in notion of time and caching
+
+
