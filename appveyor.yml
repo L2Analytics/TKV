@@ -4,7 +4,7 @@ build_script:
   - cmd: build.cmd
 test:
   assemblies:
-    - '**\tests\*.dll'
+    - TKV.Tests.dll
 
 version: 0.0.1.{build}
 artifacts:
