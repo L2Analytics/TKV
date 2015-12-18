@@ -8,7 +8,7 @@ module Log =
             member this.TryFind (t: Time) (k: 'k) = 
                 let changeTime =
                     storage.List ()
-                    |> List.filter (fun (t0, k0) -> k0 = k)
+                    |> List.filter (fun (_, k0) -> k0 = k)
                     |> List.map fst
                     |> List.sortDescending
                     |> List.tryFind (fun t0 -> t0 < t)
@@ -17,27 +17,27 @@ module Log =
             member this.Snapshot (t: Time) :Snapshot<'k, 'v> =
                 storage.List ()
                 |> List.map (fun (t0, k0) -> (k0, t0))
-                |> List.groupBy (fun (k0, t0) -> k0)
+                |> List.groupBy (fun (k0, _) -> k0)
                 |> Map.ofList
-                |> Map.map (fun k0 kts -> List.map snd kts)
-                |> Map.map (fun k ts -> 
+                |> Map.map (fun _ kts -> List.map snd kts)
+                |> Map.map (fun _ ts -> 
                     ts
                     |> List.sortDescending
                     |> List.tryFind (fun t0 -> t0 < t)
                     )
-                |> Map.filter (fun k0 t0 -> Option.isSome t0)
-                |> Map.map (fun k t -> Option.get t)
+                |> Map.filter (fun _ t0 -> Option.isSome t0)
+                |> Map.map (fun _ t -> Option.get t)
                 |> Map.toList
                 |> List.map (fun (k, t) -> (k, storage.Retrieve t k))
-                |> List.filter (fun (k, v) -> Option.isSome v)
+                |> List.filter (fun (_, v) -> Option.isSome v)
                 |> List.map (fun (k, v) -> (k, Option.get v))
                 |> Map.ofList
 
             member this.Timeseries (k: 'k) =
                 storage.List ()
-                |> List.filter (fun (t0, k0) -> k0=k)
+                |> List.filter (fun (_, k0) -> k0=k)
                 |> List.map (fun (t0, k0) -> (t0, storage.Retrieve t0 k0))
-                |> List.filter (fun (t0, v0) -> Option.isSome v0)
+                |> List.filter (fun (_, v0) -> Option.isSome v0)
                 |> List.map (fun (t0, v0) -> (t0, Option.get v0))
                 |> Map.ofList
             }

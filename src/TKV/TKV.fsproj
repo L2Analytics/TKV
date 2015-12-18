@@ -42,12 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Library.fs" />
+    <Compile Include="Types.fs" />
+    <Compile Include="Agent.fs" />
     <Compile Include="Log.fs" />
     <None Include="Script.fsx" />
     <None Include="paket.references" />
     <None Include="paket.template" />
-    <Compile Include="Types.fs" />
-    <Compile Include="Agent.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
