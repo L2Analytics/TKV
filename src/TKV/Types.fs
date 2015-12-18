@@ -21,12 +21,12 @@ type IClock =
 type IStorage<'k, 'v> =
     abstract member Store: Time -> Fact<'k, 'v> -> unit
     abstract member Retrieve: Time -> 'k -> 'v option
-    abstract member List: unit -> Time*'k list
+    abstract member List: unit -> (Time*'k) list
 
 
 type ILog<'k, 'v when 'k: comparison> =
     abstract member TryFind: Time -> 'k -> 'v option
     abstract member Append: Fact<'k, 'v> -> unit
-    abstract member KeyTimes: unit -> Time*'k list
+    abstract member KeyTimes: unit -> (Time*'k) list
     abstract member Snapshot: Time -> Snapshot<'k, 'v>
     abstract member Timeseries: 'k -> Timeseries<'v>
