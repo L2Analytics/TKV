@@ -5,7 +5,7 @@ build_script:
 test:
   assemblies:
     - TKV.Tests.dll
-
+os: Visual Studio 2015
 version: 0.0.1.{build}
 artifacts:
   - path: bin

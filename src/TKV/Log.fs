@@ -7,7 +7,7 @@ module Log =
             member this.KeyTimes () = storage.List ()
             member this.TryFind (t: Time) (k: 'k) = 
                 let changeTime =
-                    storage.List ()
+                    this.KeyTimes ()
                     |> List.filter (fun (_, k0) -> k0 = k)
                     |> List.map fst
                     |> List.sortDescending
@@ -15,7 +15,7 @@ module Log =
                 Option.bind (fun t0 -> storage.Retrieve t0 k) changeTime
 
             member this.Snapshot (t: Time) :Snapshot<'k, 'v> =
-                storage.List ()
+                this.KeyTimes ()
                 |> List.map (fun (t0, k0) -> (k0, t0))
                 |> List.groupBy (fun (k0, _) -> k0)
                 |> Map.ofList
@@ -34,12 +34,12 @@ module Log =
                 |> Map.ofList
 
             member this.Timeseries (k: 'k) =
-                storage.List ()
+                this.KeyTimes ()
                 |> List.filter (fun (_, k0) -> k0=k)
                 |> List.map (fun (t0, k0) -> (t0, storage.Retrieve t0 k0))
                 |> List.filter (fun (_, v0) -> Option.isSome v0)
                 |> List.map (fun (t0, v0) -> (t0, Option.get v0))
                 |> Map.ofList
             }
-             
+
 
