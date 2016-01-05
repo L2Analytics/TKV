@@ -26,4 +26,4 @@ module Clock =
     type Clock () = 
         let agent = Agent.New {Past=[]} update
         member self.Tick () :Time = agent.PostAndReply(fun replyChannel -> Tick replyChannel)
-        member self.Set (times: Time list) :unit = ()
+        member self.Set :unit = ()

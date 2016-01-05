@@ -10,19 +10,22 @@ module Log =
                     this.KeyTimes ()
                     |> List.filter (fun (_, k0) -> k0 = k)
                     |> List.map fst
-                    |> List.sortDescending
+                    //|> List.sortDescending
+                    |> List.sort |> List.rev
                     |> List.tryFind (fun t0 -> t0 < t)
                 Option.bind (fun t0 -> storage.Retrieve t0 k) changeTime
             
             member this.Snapshot (t: Time) :Snapshot<'k, 'v> =
                 this.KeyTimes ()
                 |> List.map (fun (t0, k0) -> (k0, t0))
-                |> List.groupBy (fun (k0, _) -> k0)
+                //|> List.groupBy (fun (k0, _) -> k0)
+                |> Seq.ofList |> Seq.groupBy (fun (k0, _) -> k0) |> List.ofSeq |> List.map (fun (k, ktSeq) -> (k, List.ofSeq ktSeq))
                 |> Map.ofList
                 |> Map.map (fun _ kts -> List.map snd kts)
                 |> Map.map (fun _ ts -> 
                     ts
-                    |> List.sortDescending
+                    //|> List.sortDescending
+                    |>List.sort |> List.rev
                     |> List.tryFind (fun t0 -> t0 < t)
                     )
                 |> Map.filter (fun _ t0 -> Option.isSome t0)

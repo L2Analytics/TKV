@@ -1,6 +1,7 @@
 module TKV.Tests
 
 open TKV
+open NUnit
 open NUnit.Framework
 open FsUnit
 
