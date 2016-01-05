@@ -10,24 +10,19 @@ module Log =
                     this.KeyTimes ()
                     |> List.filter (fun (_, k0) -> k0 = k)
                     |> List.map fst
-                    // For some reason Visual Studio does not recognize List.sortDescending when building
-                    |> List.sort
-                    |> List.rev
+                    |> List.sortDescending
                     |> List.tryFind (fun t0 -> t0 < t)
                 Option.bind (fun t0 -> storage.Retrieve t0 k) changeTime
             
             member this.Snapshot (t: Time) :Snapshot<'k, 'v> =
                 this.KeyTimes ()
                 |> List.map (fun (t0, k0) -> (k0, t0))
-                // For some reason Visual Studio does not recognize List.groupBy when building
-                |> Seq.ofList |> Seq.groupBy (fun (k0, _) -> k0) |> List.ofSeq |> List.map (fun (k, ktSeq) -> (k, List.ofSeq ktSeq))
+                |> List.groupBy (fun (k0, _) -> k0)
                 |> Map.ofList
                 |> Map.map (fun _ kts -> List.map snd kts)
                 |> Map.map (fun _ ts -> 
                     ts
-                    // For some reason Visual Studio does not recognize List.sortDescending when building
-                    |> List.sort
-                    |> List.rev
+                    |> List.sortDescending
                     |> List.tryFind (fun t0 -> t0 < t)
                     )
                 |> Map.filter (fun _ t0 -> Option.isSome t0)

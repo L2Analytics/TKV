@@ -1,32 +1,38 @@
 ﻿namespace TKV
 
-type Time = uint64
-type Date = System.DateTime
+[<AutoOpen>]
+module Types =
+    type Time = uint64
+    type Date = System.DateTime
 
-type Value<'v> =
-    | Asserted of 'v
-    | Retracted
+    type IAsOf<'t> =
+        abstract member Add: 't -> unit
+        abstract member TryFind: 't -> 't option
 
-type Snapshot<'k, 'v when 'k: comparison> = Map<'k, 'v>
-type Timeseries<'v> = Map<Time, Value<'v>>
+    type Value<'v> =
+        | Asserted of 'v
+        | Retracted
 
-type Agent<'msg> = MailboxProcessor<'msg>
+    type Snapshot<'k, 'v when 'k: comparison> = Map<'k, 'v>
+    type Timeseries<'v> = Map<Time, Value<'v>>
 
-type IClock =
-    abstract member Tick: unit -> Time
-    abstract member Set: Time list -> unit
-    abstract member FindDate: Time -> Date
-    abstract member FindTime: Date -> Time
+    type Agent<'msg> = MailboxProcessor<'msg>
 
-type IStorage<'k, 'v> =
-    abstract member Store: Time -> 'k -> Value<'v> -> unit
-    abstract member Retrieve: Time -> 'k -> Value<'v> option
-    abstract member List: unit -> (Time*'k) list
+    type IClock =
+        abstract member Tick: unit -> Time
+        abstract member Set: Time list -> unit
+        abstract member FindDate: Time -> Date
+        abstract member FindTime: Date -> Time
+
+    type IStorage<'k, 'v> =
+        abstract member Store: Time -> 'k -> Value<'v> -> unit
+        abstract member Retrieve: Time -> 'k -> Value<'v> option
+        abstract member List: unit -> (Time*'k) list
 
 
-type ILog<'k, 'v when 'k: comparison> =
-    abstract member TryFind: Time -> 'k -> Value<'v> option
-    abstract member Append: 'k -> Value<'v> -> unit
-    abstract member KeyTimes: unit -> (Time*'k) list
-    abstract member Snapshot: Time -> Snapshot<'k, 'v>
-    abstract member Timeseries: 'k -> Timeseries<'v>
+    type ILog<'k, 'v when 'k: comparison> =
+        abstract member TryFind: Time -> 'k -> Value<'v> option
+        abstract member Append: 'k -> Value<'v> -> unit
+        abstract member KeyTimes: unit -> (Time*'k) list
+        abstract member Snapshot: Time -> Snapshot<'k, 'v>
+        abstract member Timeseries: 'k -> Timeseries<'v>
