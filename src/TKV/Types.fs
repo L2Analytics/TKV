@@ -5,9 +5,9 @@ module Types =
     type Time = uint64
     type Date = System.DateTime
 
-    type IAsOf<'t> =
+    type ITimeLookup<'t> =
         abstract member Add: 't -> unit
-        abstract member TryFind: 't -> 't option
+        abstract member FindAsOf: 't -> 't option
 
     type Value<'v> =
         | Asserted of 'v

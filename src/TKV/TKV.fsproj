@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="Types.fs" />
     <Compile Include="Time.fs" />
-    <Compile Include="AsOf.fs" />
+    <Compile Include="TimeLookup.fs" />
     <Compile Include="Agent.fs" />
     <Compile Include="Clock.fs" />
     <Compile Include="Log.fs" />

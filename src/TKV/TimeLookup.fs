@@ -1,6 +1,6 @@
 ﻿namespace TKV
 
-module AsOf =
+module TimeLookup =
     
     let arraySearch (t: 't) (ts: 't array) =
         let n = System.Array.BinarySearch (ts, t)
@@ -20,10 +20,10 @@ module AsOf =
 
     type Basic<'t> (ts: 't list) =
         let storage =  new System.Collections.Generic.SortedSet<'t>(ts)
-        interface IAsOf<'t> with
+        interface ITimeLookup<'t> with
             member this.Add (x: 't) = storage.Add x |> ignore
-            member this.TryFind (x: 't) =
+            member this.FindAsOf (x: 't) =
                 System.Linq.Enumerable.ToArray storage
                 |> (arraySearch x)
-    let New (ts: 't list) :IAsOf<'t> = new Basic<'t>(ts) :> IAsOf<'t>
+    let New (ts: 't list) :ITimeLookup<'t> = new Basic<'t>(ts) :> ITimeLookup<'t>
 
