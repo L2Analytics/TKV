@@ -18,12 +18,13 @@ module TimeLookup =
             | _ -> Some ts.[0]
         | _ -> Some ts.[0]
 
-    type Basic<'t> (ts: 't list) =
+    let New (ts: 't list) =
         let storage =  new System.Collections.Generic.SortedSet<'t>(ts)
-        interface ITimeLookup<'t> with
+        {new ITimeLookup<'t> with
             member this.Add (x: 't) = storage.Add x |> ignore
             member this.FindAsOf (x: 't) =
                 System.Linq.Enumerable.ToArray storage
                 |> (arraySearch x)
-    let New (ts: 't list) :ITimeLookup<'t> = new Basic<'t>(ts) :> ITimeLookup<'t>
+        }
+
 
