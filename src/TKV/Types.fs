@@ -8,6 +8,7 @@ module Types =
     type ITimeLookup<'t> =
         abstract member Add: 't -> unit
         abstract member FindAsOf: 't -> 't option
+        abstract member FindAsOfIndex: 't -> int option
 
     type Value<'v> =
         | Asserted of 'v
